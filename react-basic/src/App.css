@@ -12,6 +12,7 @@
   box-shadow: 7px 7px 20px #efefef, -7px -7px 20px #fff;
 }
 .avartar {
+  max-width: 280px;
   position: relative;
 }
 .badge {

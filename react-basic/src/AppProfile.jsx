@@ -3,8 +3,20 @@ import Profile from './components/Profile';
 import Avartar from './components/Avartar';
 
 function AppProfile() {
+  const handleClick = (event) => {
+    console.log(event);
+    alert('버튼이 클릭됨!');
+  };
   return (
     <>
+      <button onClick={handleClick}>버튼</button>
+      <form onSubmit={() => {}}>
+        <input type='text' />
+      </form>
+      <Avartar
+        image='https://cdn.pixabay.com/photo/2023/02/24/09/35/ai-generated-7810589_1280.jpg'
+        isNew={true}
+      />
       <Profile
         image='https://cdn.pixabay.com/photo/2023/02/24/09/35/ai-generated-7810589_1280.jpg'
         name='Alice'
