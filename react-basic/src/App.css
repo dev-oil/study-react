@@ -38,6 +38,14 @@
 }
 
 /* AppCounter */
+.banner {
+  margin: 20px;
+  padding: 10px;
+  text-align: center;
+  background-color: #000;
+  color: #fff;
+  border-radius: 8px;
+}
 .counter {
   display: flex;
   flex-direction: column;
@@ -61,4 +69,7 @@
 }
 .counter .button:hover {
   box-shadow: rgba(100, 100, 111, 0.4) 0px 7px 10px 0px;
+}
+.counter .total {
+  font-size: 20px;
 }

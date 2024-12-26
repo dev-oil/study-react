@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function Counter({ totalCount }) {
+export default function Counter({ total, onClick }) {
   const [count, setCount] = useState(0);
   // count -> 값을 가리키고 있는 변수
   // setCount -> 값을 업데이트 할 수 있는 함수
@@ -8,12 +8,13 @@ export default function Counter({ totalCount }) {
   return (
     <>
       <div className='counter'>
-        <span className='number'>{count}</span>
+        <p className='number'>
+          {count} <span className='total'>/ {total}</span>
+        </p>
         <button
           className='button'
           onClick={() => {
-            totalCount();
-
+            onClick();
             // 호출 될 때 전달되는 이 콜백함수는, 호출 될 때 snapshot 함 (찰칵 하고 저장)
             // 캡쳐된 모든 환경이 렉시컬 environment
 
