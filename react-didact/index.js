@@ -35,7 +35,6 @@ const isEvent = (key) => key.startsWith('on');
 const isProperty = (key) => key !== 'children' && !isEvent(key);
 const isNew = (prev, next) => (key) => prev[key] !== next[key];
 const isGone = (prev, next) => (key) => !(key in next);
-
 function updateDom(dom, prevProps, nextProps) {
   //Remove old or changed event listeners
   Object.keys(prevProps)
@@ -73,7 +72,6 @@ function updateDom(dom, prevProps, nextProps) {
 }
 
 function commitRoot() {
-  // TODO add nodes to dom
   deletions.forEach(commitWork);
   commitWork(wipRoot.child);
   currentRoot = wipRoot;
@@ -89,7 +87,7 @@ function commitWork(fiber) {
   while (!domParentFiber.dom) {
     domParentFiber = domParentFiber.parent;
   }
-  const domParent = fiber.parent.dom;
+  const domParent = domParentFiber.dom;
 
   if (fiber.effectTag === 'PLACEMENT' && fiber.dom != null) {
     domParent.appendChild(fiber.dom);
@@ -98,6 +96,7 @@ function commitWork(fiber) {
   } else if (fiber.effectTag === 'DELETION') {
     commitDeletion(fiber, domParent);
   }
+
   commitWork(fiber.child);
   commitWork(fiber.sibling);
 }
@@ -137,6 +136,7 @@ function workLoop(deadline) {
   if (!nextUnitOfWork && wipRoot) {
     commitRoot();
   }
+
   requestIdleCallback(workLoop);
 }
 
@@ -149,7 +149,6 @@ function performUnitOfWork(fiber) {
   } else {
     updateHostComponent(fiber);
   }
-
   if (fiber.child) {
     return fiber.child;
   }
@@ -162,9 +161,46 @@ function performUnitOfWork(fiber) {
   }
 }
 
+let wipFiber = null;
+let hookIndex = null;
+
 function updateFunctionComponent(fiber) {
+  wipFiber = fiber;
+  hookIndex = 0;
+  wipFiber.hooks = [];
   const children = [fiber.type(fiber.props)];
   reconcileChildren(fiber, children);
+}
+
+function useState(initial) {
+  const oldHook =
+    wipFiber.alternate &&
+    wipFiber.alternate.hooks &&
+    wipFiber.alternate.hooks[hookIndex];
+  const hook = {
+    state: oldHook ? oldHook.state : initial,
+    queue: [],
+  };
+
+  const actions = oldHook ? oldHook.queue : [];
+  actions.forEach((action) => {
+    hook.state = action(hook.state);
+  });
+
+  const setState = (action) => {
+    hook.queue.push(action);
+    wipRoot = {
+      dom: currentRoot.dom,
+      props: currentRoot.props,
+      alternate: currentRoot,
+    };
+    nextUnitOfWork = wipRoot;
+    deletions = [];
+  };
+
+  wipFiber.hooks.push(hook);
+  hookIndex++;
+  return [hook.state, setState];
 }
 
 function updateHostComponent(fiber) {
@@ -175,7 +211,6 @@ function updateHostComponent(fiber) {
 }
 
 function reconcileChildren(wipFiber, elements) {
-  // TODO create new fibers
   let index = 0;
   let oldFiber = wipFiber.alternate && wipFiber.alternate.child;
   let prevSibling = null;
@@ -184,11 +219,9 @@ function reconcileChildren(wipFiber, elements) {
     const element = elements[index];
     let newFiber = null;
 
-    // TODO compare oldFiber to element
     const sameType = oldFiber && element && element.type == oldFiber.type;
 
     if (sameType) {
-      // TODO update the node
       newFiber = {
         type: oldFiber.type,
         props: element.props,
@@ -199,7 +232,6 @@ function reconcileChildren(wipFiber, elements) {
       };
     }
     if (element && !sameType) {
-      // TODO add this node
       newFiber = {
         type: element.type,
         props: element.props,
@@ -210,7 +242,6 @@ function reconcileChildren(wipFiber, elements) {
       };
     }
     if (oldFiber && !sameType) {
-      // TODO delete the oldFiber's node
       oldFiber.effectTag = 'DELETION';
       deletions.push(oldFiber);
     }
@@ -233,23 +264,18 @@ function reconcileChildren(wipFiber, elements) {
 const Didact = {
   createElement,
   render,
+  useState,
 };
 
 /** @jsx Didact.createElement */
-const container = document.getElementById('root');
-
-const updateValue = (e) => {
-  rerender(e.target.value);
-};
-
-const rerender = (value) => {
-  const element = (
-    <div>
-      <input onInput={updateValue} value={value} />
-      <h2>Hello {value}</h2>
-    </div>
+function Counter() {
+  const [state, setState] = Didact.useState(1);
+  return (
+    <h1 onClick={() => setState((c) => c + 1)} style='user-select: none'>
+      Count: {state}
+    </h1>
   );
-  Didact.render(element, container);
-};
-
-rerender('World');
+}
+const element = <Counter />;
+const container = document.getElementById('root');
+Didact.render(element, container);
