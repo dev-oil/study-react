@@ -11,11 +11,12 @@ export default function Products() {
   } = useQuery({
     queryKey: ['products', checked],
     queryFn: async () => {
-      console.log('fetching...');
+      console.log('fetching...', checked);
       return fetch(`data/${checked ? 'sale_' : ''}products.json`).then((res) =>
         res.json()
       );
     },
+    staleTime: 1000 * 60 * 5, // 5분 캐싱
   });
   const handleChange = () => setChecked((prev) => !prev);
 
