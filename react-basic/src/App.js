@@ -1,17 +1,15 @@
 import React from 'react';
 import './App.css';
-import MainProducts from './components/MainProducts';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-
-// Create a client
-const queryClient = new QueryClient();
+import Memo from './study/Memo';
+import UseMemo from './study/UseMemo';
+import UseCallback from './study/UseCallback';
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <MainProducts />
-      <ReactQueryDevtools initialIsOpen={true} />
-    </QueryClientProvider>
+    <>
+      <Memo />
+      {/* <UseCallback />
+      <UseMemo /> */}
+    </>
   );
 }
