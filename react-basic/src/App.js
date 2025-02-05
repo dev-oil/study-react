@@ -7,9 +7,9 @@ import UseCallback from './study/UseCallback';
 export default function App() {
   return (
     <>
-      <Memo />
-      {/* <UseCallback />
+      {/* <Memo />
       <UseMemo /> */}
+      <UseCallback />
     </>
   );
 }

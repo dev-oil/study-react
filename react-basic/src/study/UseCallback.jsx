@@ -1,3 +1,6 @@
+// useMemo는 리렌더링과 재계산을 줄이기 위해 쓰고
+// 💡 useCallback은 리렌더링만 줄이기 위해 쓴다
+
 import React, { useState, useCallback } from 'react';
 
 // 자식 컴포넌트
