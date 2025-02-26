@@ -332,8 +332,51 @@ function memo(Component, areEqual) {
 }
 
 // useMemo
+function useMemo(callback, deps) {
+  // oldHook 가져오기
+  let oldHook = undefined;
+
+  if (wipFiber.alternate) { 
+    if (wipFiber.alternate.hooks) { 
+      oldHook = wipFiber.alternate.hooks[hookIndex]; 
+    }
+  } // const oldHook = wipFiber.alternate?.hooks?.[hookIndex];
+
+  // deps가 변경되었는지 확인
+  let hasChanged = false;
+
+  if (!oldHook) {
+    hasChanged = true;
+  } else {
+    if (!oldHook.deps) {
+      hasChanged = true;
+    } else {
+      hasChanged = false;
+      for (let i = 0; i < deps.length; i++) {
+        if (!Object.is(oldHook.deps[i], deps[i])) {
+          hasChanged = true; 
+          break;
+        }
+      }
+    }
+  }
+  // const hasChanged = !oldHook?.deps?.every((d, i) => Object.is(d, deps[i]));
+
+  const hook = {
+    memoizedValue: hasChanged ? callback() : oldHook.memoizedValue,
+    deps,
+  };
+
+  wipFiber.hooks.push(hook);
+  hookIndex++;
+
+  return hook.memoizedValue;
+}
 
 // useCallback
+function useCallback(callback, deps) {
+  return useMemo(() => callback, deps);
+}
 
 
 const Didact = {
@@ -341,44 +384,57 @@ const Didact = {
   render,
   useState,
   memo,
+  useMemo,
+  useCallback,
 }
 
 /** @jsx Didact.createElement */
 // ================== Memo 예제 ====================
-function Counter({ value }) {
-  console.log("Counter 렌더링"); // 변화가 없으면 콘솔 출력되지 않음
-  return <h1>Count: {value}</h1>;
-}
+// function Counter({ value }) {
+//   console.log("Counter 렌더링"); // 변화가 없으면 콘솔 출력되지 않음
+//   return <h1>Count: {value}</h1>;
+// }
 
-const MemoizedCounter = memo(Counter, (prevProps, nextProps) => {
-  return prevProps.value === nextProps.value;
-});
+// const MemoizedCounter = memo(Counter, (prevProps, nextProps) => {
+//   return prevProps.value === nextProps.value;
+// });
+
+// function App() {
+//   const [count, setCount] = Didact.useState(0);
+//   return (
+//     <div>
+//       {/* memo */}
+//       <MemoizedCounter value={count} /> 
+//       {/* 그냥 사용했을 때 */}
+//       {/* <Counter value={count} /> */}
+//       <button onClick={() => setCount(count)}>클릭</button>
+//     </div>
+//   );
+// }
+
+// ================== useMemo 예제 ====================
+function ExpensiveComponent({count}) {
+  const value = useMemo(() => {
+    console.log("계산 중...");
+    return count * 102;
+  }, [count]);
+
+  return <h1>계산결과: {value}</h1>;
+}
 
 function App() {
   const [count, setCount] = Didact.useState(0);
   return (
     <div>
-      {/* memo */}
-      <MemoizedCounter value={count} /> 
-      {/* 그냥 사용했을 때 */}
-      {/* <Counter value={count} /> */}
-      <button onClick={() => setCount(count)}>클릭</button>
+      <ExpensiveComponent count={count} />
+      <button onClick={() => setCount(count)}>숫자 그대로</button>
+      <button onClick={() => setCount(count + 1)}>하나 업</button>
+
     </div>
   );
 }
+// ================== useCallback 예제 ====================
 
 const element = <App />;
 const container = document.getElementById("root");
 Didact.render(element, container);
-
-// function Counter() {
-//   const [state, setState] = Didact.useState(1)
-//   return (
-//     <h1 onClick={() => setState(c => c + 1)}>
-//       Count: {state}
-//     </h1>
-//   )
-// }
-// const element = <Counter />
-// const container = document.getElementById("root")
-// Didact.render(element, container)
