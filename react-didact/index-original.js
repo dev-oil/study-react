@@ -3,137 +3,109 @@ function createElement(type, props, ...children) {
     type,
     props: {
       ...props,
-      children: children.map(child =>
-        typeof child === "object"
-          ? child
-          : createTextElement(child)
+      children: children.map((child) =>
+        typeof child === 'object' ? child : createTextElement(child)
       ),
     },
-  }
+  };
 }
 
 function createTextElement(text) {
   return {
-    type: "TEXT_ELEMENT",
+    type: 'TEXT_ELEMENT',
     props: {
       nodeValue: text,
       children: [],
     },
-  }
+  };
 }
 
 function createDom(fiber) {
   const dom =
-    fiber.type == "TEXT_ELEMENT"
-      ? document.createTextNode("")
-      : document.createElement(fiber.type)
+    fiber.type == 'TEXT_ELEMENT'
+      ? document.createTextNode('')
+      : document.createElement(fiber.type);
 
-  updateDom(dom, {}, fiber.props)
+  updateDom(dom, {}, fiber.props);
 
-  return dom
+  return dom;
 }
 
-const isEvent = key => key.startsWith("on")
-const isProperty = key =>
-  key !== "children" && !isEvent(key)
-const isNew = (prev, next) => key =>
-  prev[key] !== next[key]
-const isGone = (prev, next) => key => !(key in next)
+const isEvent = (key) => key.startsWith('on');
+const isProperty = (key) => key !== 'children' && !isEvent(key);
+const isNew = (prev, next) => (key) => prev[key] !== next[key];
+const isGone = (prev, next) => (key) => !(key in next);
 function updateDom(dom, prevProps, nextProps) {
   //Remove old or changed event listeners
   Object.keys(prevProps)
     .filter(isEvent)
-    .filter(
-      key =>
-        !(key in nextProps) ||
-        isNew(prevProps, nextProps)(key)
-    )
-    .forEach(name => {
-      const eventType = name
-        .toLowerCase()
-        .substring(2)
-      dom.removeEventListener(
-        eventType,
-        prevProps[name]
-      )
-    })
+    .filter((key) => !(key in nextProps) || isNew(prevProps, nextProps)(key))
+    .forEach((name) => {
+      const eventType = name.toLowerCase().substring(2);
+      dom.removeEventListener(eventType, prevProps[name]);
+    });
 
   // Remove old properties
   Object.keys(prevProps)
     .filter(isProperty)
     .filter(isGone(prevProps, nextProps))
-    .forEach(name => {
-      dom[name] = ""
-    })
+    .forEach((name) => {
+      dom[name] = '';
+    });
 
   // Set new or changed properties
   Object.keys(nextProps)
     .filter(isProperty)
     .filter(isNew(prevProps, nextProps))
-    .forEach(name => {
-      dom[name] = nextProps[name]
-    })
+    .forEach((name) => {
+      dom[name] = nextProps[name];
+    });
 
   // Add event listeners
   Object.keys(nextProps)
     .filter(isEvent)
     .filter(isNew(prevProps, nextProps))
-    .forEach(name => {
-      const eventType = name
-        .toLowerCase()
-        .substring(2)
-      dom.addEventListener(
-        eventType,
-        nextProps[name]
-      )
-    })
+    .forEach((name) => {
+      const eventType = name.toLowerCase().substring(2);
+      dom.addEventListener(eventType, nextProps[name]);
+    });
 }
 
 function commitRoot() {
-  deletions.forEach(commitWork)
-  commitWork(wipRoot.child)
-  currentRoot = wipRoot
-  wipRoot = null
+  deletions.forEach(commitWork);
+  commitWork(wipRoot.child);
+  currentRoot = wipRoot;
+  wipRoot = null;
 }
 
 function commitWork(fiber) {
   if (!fiber) {
-    return
+    return;
   }
 
-  let domParentFiber = fiber.parent
+  let domParentFiber = fiber.parent;
   while (!domParentFiber.dom) {
-    domParentFiber = domParentFiber.parent
+    domParentFiber = domParentFiber.parent;
   }
-  const domParent = domParentFiber.dom
+  const domParent = domParentFiber.dom;
 
-  if (
-    fiber.effectTag === "PLACEMENT" &&
-    fiber.dom != null
-  ) {
-    domParent.appendChild(fiber.dom)
-  } else if (
-    fiber.effectTag === "UPDATE" &&
-    fiber.dom != null
-  ) {
-    updateDom(
-      fiber.dom,
-      fiber.alternate.props,
-      fiber.props
-    )
-  } else if (fiber.effectTag === "DELETION") {
-    commitDeletion(fiber, domParent)
+  if (fiber.effectTag === 'PLACEMENT' && fiber.dom != null) {
+    domParent.appendChild(fiber.dom);
+  } else if (fiber.effectTag === 'UPDATE' && fiber.dom != null) {
+    updateDom(fiber.dom, fiber.alternate.props, fiber.props);
+  } else if (fiber.effectTag === 'DELETION') {
+    commitDeletion(fiber, domParent);
   }
 
-  commitWork(fiber.child)
-  commitWork(fiber.sibling)
+  commitWork(fiber.child);
+  commitWork(fiber.sibling);
 }
 
 function commitDeletion(fiber, domParent) {
   if (fiber.dom) {
-    domParent.removeChild(fiber.dom)
+    domParent.removeChild(fiber.dom);
   } else {
-    commitDeletion(fiber.child, domParent)
+    commitDeletion(fiber.child, domParent);
   }
 }
 
@@ -144,67 +116,64 @@ function render(element, container) {
       children: [element],
     },
     alternate: currentRoot,
-  }
-  deletions = []
-  nextUnitOfWork = wipRoot
+  };
+  deletions = [];
+  nextUnitOfWork = wipRoot;
 }
 
-let nextUnitOfWork = null
-let currentRoot = null
-let wipRoot = null
-let deletions = null
+let nextUnitOfWork = null;
+let currentRoot = null;
+let wipRoot = null;
+let deletions = null;
 
 function workLoop(deadline) {
-  let shouldYield = false
+  let shouldYield = false;
   while (nextUnitOfWork && !shouldYield) {
-    nextUnitOfWork = performUnitOfWork(
-      nextUnitOfWork
-    )
-    shouldYield = deadline.timeRemaining() < 1
+    nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
+    shouldYield = deadline.timeRemaining() < 1;
   }
 
   if (!nextUnitOfWork && wipRoot) {
-    commitRoot()
+    commitRoot();
   }
 
-  requestIdleCallback(workLoop)
+  requestIdleCallback(workLoop);
 }
 
-requestIdleCallback(workLoop)
+requestIdleCallback(workLoop);
 
 function performUnitOfWork(fiber) {
-  const isFunctionComponent =
-    fiber.type instanceof Function
+  const isFunctionComponent = fiber.type instanceof Function;
   if (isFunctionComponent) {
-    updateFunctionComponent(fiber)
+    updateFunctionComponent(fiber);
   } else {
-    updateHostComponent(fiber)
+    updateHostComponent(fiber);
   }
   if (fiber.child) {
-    return fiber.child
+    return fiber.child;
   }
-  let nextFiber = fiber
+  let nextFiber = fiber;
   while (nextFiber) {
     if (nextFiber.sibling) {
-      return nextFiber.sibling
+      return nextFiber.sibling;
     }
-    nextFiber = nextFiber.parent
+    nextFiber = nextFiber.parent;
   }
 }
 
-let wipFiber = null
-let hookIndex = null
+let wipFiber = null;
+let hookIndex = null;
 
 function updateFunctionComponent(fiber) {
-  wipFiber = fiber
-  hookIndex = 0
-  wipFiber.hooks = []
+  wipFiber = fiber;
+  hookIndex = 0;
+  wipFiber.hooks = [];
 
-  const children = [fiber.type(fiber.props)]
-  reconcileChildren(fiber, children)
+  const children = [fiber.type(fiber.props)];
+  reconcileChildren(fiber, children);
 }
 
-/** 
+/**
  * action issue 수정
  * action이 함수가 아니라 값(숫자, 문자열 등)일 경우에 대한 처리를 추가해줘야함
  * */
@@ -212,64 +181,57 @@ function useState(initial) {
   const oldHook =
     wipFiber.alternate &&
     wipFiber.alternate.hooks &&
-    wipFiber.alternate.hooks[hookIndex]
+    wipFiber.alternate.hooks[hookIndex];
   const hook = {
     state: oldHook ? oldHook.state : initial,
     queue: [],
-  }
+  };
 
-  const actions = oldHook ? oldHook.queue : []
-  actions.forEach(action => {
+  const actions = oldHook ? oldHook.queue : [];
+  actions.forEach((action) => {
     // action issue => 함수라면 함수로 / 아니라면 값으로 직접 대입
-    if (typeof action === "function") {
+    if (typeof action === 'function') {
       hook.state = action(hook.state);
     } else {
       hook.state = action;
     }
-  })
+  });
 
-  const setState = action => {
+  const setState = (action) => {
     // action issue => 함수가 아니면 함수로 감싸줘서 함수로 만들어주기
-    const update = typeof action === "function" ? action : () => action; 
-    hook.queue.push(update)
+    const update = typeof action === 'function' ? action : () => action;
+    hook.queue.push(update);
     wipRoot = {
       dom: currentRoot.dom,
       props: currentRoot.props,
       alternate: currentRoot,
-    }
-    nextUnitOfWork = wipRoot
-    deletions = []
-  }
+    };
+    nextUnitOfWork = wipRoot;
+    deletions = [];
+  };
 
-  wipFiber.hooks.push(hook)
-  hookIndex++
-  return [hook.state, setState]
+  wipFiber.hooks.push(hook);
+  hookIndex++;
+  return [hook.state, setState];
 }
 
 function updateHostComponent(fiber) {
   if (!fiber.dom) {
-    fiber.dom = createDom(fiber)
+    fiber.dom = createDom(fiber);
   }
-  reconcileChildren(fiber, fiber.props.children)
+  reconcileChildren(fiber, fiber.props.children);
 }
 
 function reconcileChildren(wipFiber, elements) {
-  let index = 0
-  let oldFiber =
-    wipFiber.alternate && wipFiber.alternate.child
-  let prevSibling = null
+  let index = 0;
+  let oldFiber = wipFiber.alternate && wipFiber.alternate.child;
+  let prevSibling = null;
 
-  while (
-    index < elements.length ||
-    oldFiber != null
-  ) {
-    const element = elements[index]
-    let newFiber = null
+  while (index < elements.length || oldFiber != null) {
+    const element = elements[index];
+    let newFiber = null;
 
-    const sameType =
-      oldFiber &&
-      element &&
-      element.type == oldFiber.type
+    const sameType = oldFiber && element && element.type == oldFiber.type;
 
     if (sameType) {
       newFiber = {
@@ -278,8 +240,8 @@ function reconcileChildren(wipFiber, elements) {
         dom: oldFiber.dom,
         parent: wipFiber,
         alternate: oldFiber,
-        effectTag: "UPDATE",
-      }
+        effectTag: 'UPDATE',
+      };
     }
     if (element && !sameType) {
       newFiber = {
@@ -288,34 +250,32 @@ function reconcileChildren(wipFiber, elements) {
         dom: null,
         parent: wipFiber,
         alternate: null,
-        effectTag: "PLACEMENT",
-      }
+        effectTag: 'PLACEMENT',
+      };
     }
     if (oldFiber && !sameType) {
-      oldFiber.effectTag = "DELETION"
-      deletions.push(oldFiber)
+      oldFiber.effectTag = 'DELETION';
+      deletions.push(oldFiber);
     }
 
     if (oldFiber) {
-      oldFiber = oldFiber.sibling
+      oldFiber = oldFiber.sibling;
     }
 
     if (index === 0) {
-      wipFiber.child = newFiber
+      wipFiber.child = newFiber;
     } else if (element) {
-      prevSibling.sibling = newFiber
+      prevSibling.sibling = newFiber;
     }
 
-    prevSibling = newFiber
-    index++
+    prevSibling = newFiber;
+    index++;
   }
 }
-
 
 // memo
 function memo(Component, areEqual) {
   function MemoizedComponent(props) {
-
     // 기존 Fiber 트리 가져오기
     const oldFiber = wipFiber && wipFiber.alternate ? wipFiber.alternate : null;
 
@@ -326,41 +286,39 @@ function memo(Component, areEqual) {
         return oldFiber.child;
       }
     }
-    return Component(props)
+    return Component(props);
   }
   return MemoizedComponent;
 }
 
 // useMemo
 function useMemo(callback, deps) {
+  // deps <- 얘의 길이가 바뀌어한다
   // oldHook 가져오기
   let oldHook = undefined;
 
-  if (wipFiber.alternate) { 
-    if (wipFiber.alternate.hooks) { 
-      oldHook = wipFiber.alternate.hooks[hookIndex]; 
+  if (wipFiber.alternate) {
+    if (wipFiber.alternate.hooks) {
+      oldHook = wipFiber.alternate.hooks[hookIndex];
     }
   } // const oldHook = wipFiber.alternate?.hooks?.[hookIndex];
 
   // deps가 변경되었는지 확인
   let hasChanged = false;
+  // [1,2,3] 6 [1,2,3,4] 6
+  // [1,2,3,undefined] [1,2,3]
+  // false negative(실제론 폐암인데, 건강합니다), false positive(실제론 건강한데, 폐암입니다) (positive = deps가 같다. 그대로 유지된다)
 
-  if (!oldHook) {
+  if (!oldHook || !oldHook.deps || oldHook.deps.length !== deps.length) {
     hasChanged = true;
   } else {
-    if (!oldHook.deps) {
-      hasChanged = true;
-    } else {
-      hasChanged = false;
-      for (let i = 0; i < deps.length; i++) {
-        if (!Object.is(oldHook.deps[i], deps[i])) {
-          hasChanged = true; 
-          break;
-        }
+    for (let i = 0; i < deps.length; i++) {
+      if (!Object.is(oldHook.deps[i], deps[i])) {
+        hasChanged = true;
+        break;
       }
     }
   }
-  // const hasChanged = !oldHook?.deps?.every((d, i) => Object.is(d, deps[i]));
 
   const hook = {
     memoizedValue: hasChanged ? callback() : oldHook.memoizedValue,
@@ -378,7 +336,6 @@ function useCallback(callback, deps) {
   return useMemo(() => callback, deps);
 }
 
-
 const Didact = {
   createElement,
   render,
@@ -386,36 +343,36 @@ const Didact = {
   memo,
   useMemo,
   useCallback,
-}
+};
 
 /** @jsx Didact.createElement */
 // ================== Memo 예제 ====================
-// function Counter({ value }) {
-//   console.log("Counter 렌더링"); // 변화가 없으면 콘솔 출력되지 않음
-//   return <h1>Count: {value}</h1>;
-// }
+function Counter({ value }) {
+  console.log('Counter 렌더링'); // 변화가 없으면 콘솔 출력되지 않음
+  return <h1>Count: {value}</h1>;
+}
 
-// const MemoizedCounter = memo(Counter, (prevProps, nextProps) => {
-//   return prevProps.value === nextProps.value;
-// });
+const MemoizedCounter = memo(Counter, (prevProps, nextProps) => {
+  return prevProps.value === nextProps.value;
+});
 
-// function App() {
-//   const [count, setCount] = Didact.useState(0);
-//   return (
-//     <div>
-//       {/* memo */}
-//       <MemoizedCounter value={count} /> 
-//       {/* 그냥 사용했을 때 */}
-//       {/* <Counter value={count} /> */}
-//       <button onClick={() => setCount(count)}>클릭</button>
-//     </div>
-//   );
-// }
+function App() {
+  const [count, setCount] = Didact.useState(0);
+  return (
+    <div>
+      {/* memo */}
+      <MemoizedCounter value={count} />
+      {/* 그냥 사용했을 때 */}
+      {/* <Counter value={count} /> */}
+      <button onClick={() => setCount(count)}>클릭</button>
+    </div>
+  );
+}
 
 // ================== useMemo 예제 ====================
-function ExpensiveComponent({count}) {
+function ExpensiveComponent({ count }) {
   const value = useMemo(() => {
-    console.log("계산 중...");
+    console.log('계산 중...');
     return count * 102;
   }, [count]);
 
@@ -429,12 +386,26 @@ function App() {
       <ExpensiveComponent count={count} />
       <button onClick={() => setCount(count)}>숫자 그대로</button>
       <button onClick={() => setCount(count + 1)}>하나 업</button>
-
     </div>
   );
 }
 // ================== useCallback 예제 ====================
 
 const element = <App />;
-const container = document.getElementById("root");
+const container = document.getElementById('root');
 Didact.render(element, container);
+
+// const arr = [1, 2, 3];
+
+function Foo() {
+  const [arr, setState] = useState([1, 2, 3]);
+  const x = useMemo(() => {
+    console.log('useMemo 실행');
+
+    return 0;
+  }, [...arr]); // deps = [0], [1], [2], [3]
+
+  console.log('컴포넌트 렌더링', x);
+
+  return <button onClick={() => setSTate([...arr, 1])} />;
+}
