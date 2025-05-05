@@ -1,0 +1,25 @@
+.board-row {
+  display: flex;
+}
+
+.square {
+  width: 50px;
+  height: 50px;
+  border: 1px solid #000;
+  font-size: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: white;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.square + .square {
+  border-left: none;
+}
+
+.board-row + .board-row .square {
+  border-top: none;
+}
