@@ -9,7 +9,7 @@ export const Home = () => {
           <Link to='/typescript'>0. TypeScript</Link>
         </li>
         <li>
-          <Link to='/category2'>1. Category 2</Link>
+          <Link to='/ui'>1. UI</Link>
         </li>
       </ul>
     </div>
