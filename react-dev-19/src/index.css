@@ -1,0 +1,8 @@
+.section {
+  padding: 20px;
+  background: #eee;
+}
+
+.section + .section {
+  margin-top: 20px;
+}
