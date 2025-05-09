@@ -1,9 +1,9 @@
-import { Event } from '../components/Interactivity/Event';
-import { PassingEvent } from '../components/Interactivity/PassingEvent';
-import { EventHandleProp } from '../components/Interactivity/EventHandleProp';
-import { EventBubbling } from '../components/Interactivity/EventBubbling';
-import { EventBubblingStopPropagation } from '../components/Interactivity/EventBubblingStopPropagation';
-import { DefaultBehavior } from '../components/Interactivity/DefaultBehavior';
+import { Event } from '../components/Interactivity/Event/Event';
+import { PassingEvent } from '../components/Interactivity/Event/PassingEvent';
+import { EventHandleProp } from '../components/Interactivity/Event/EventHandleProp';
+import { EventBubbling } from '../components/Interactivity/Event/EventBubbling';
+import { EventBubblingStopPropagation } from '../components/Interactivity/Event/EventBubblingStopPropagation';
+import { DefaultBehavior } from '../components/Interactivity/Event/DefaultBehavior';
 
 export const Interactivity = () => {
   return (
