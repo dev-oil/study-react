@@ -11,6 +11,9 @@ export const Home = () => {
         <li>
           <Link to='/ui'>1. UI</Link>
         </li>
+        <li>
+          <Link to='/interactivity'>2. 상호작용</Link>
+        </li>
       </ul>
     </div>
   );
