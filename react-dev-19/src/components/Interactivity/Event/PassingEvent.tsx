@@ -28,8 +28,11 @@ const UploadButton = () => {
 export const PassingEvent = () => {
   return (
     <section className='section'>
-      <PlayButton movieName="Kiki's Delivery Service" />
-      <UploadButton />
+      <strong>이벤트 핸들러 prop 전달</strong>
+      <div>
+        <PlayButton movieName="Kiki's Delivery Service" />
+        <UploadButton />
+      </div>
     </section>
   );
 };

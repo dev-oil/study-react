@@ -5,6 +5,9 @@ export const DefaultBehavior = () => {
 
   return (
     <section className='section'>
+      <strong>
+        기본 동작 막기 <code>e.preventDefault()</code>
+      </strong>
       <form
         onSubmit={(e) => {
           e.preventDefault();

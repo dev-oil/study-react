@@ -21,8 +21,11 @@ const Button = ({ onClick, children }: ButtonProps) => {
 export const EventBubblingStopPropagation = () => {
   return (
     <section className='section'>
-      <strong>버블링 멈춰!</strong>
+      <strong>
+        이벤트 버블링 멈춰! <code>e.stopPropagation()</code>
+      </strong>
       <div
+        className='Toolbar'
         onClick={() => {
           alert('You clicked on the toolbar!');
         }}

@@ -11,10 +11,13 @@ const Button = <T extends ReactNode>({ onSmash, children }: ButtonProps<T>) => {
 
 export const EventHandleProp = () => {
   return (
-    // onClick props 의 이름을 내가 지정할 수 있음
+    // onClick 이벤트 핸들러 prop 의 이름을 내가 지정할 수 있음
     <section className='section'>
-      <Button onSmash={() => alert('Playing!')}>Play Movie</Button>
-      <Button onSmash={() => alert('Uploading!')}>Upload Image</Button>
+      <strong>onClick 이벤트 핸들러 prop 이름 마음대로 명명 가능</strong>
+      <div>
+        <Button onSmash={() => alert('Playing!')}>Play Movie</Button>
+        <Button onSmash={() => alert('Uploading!')}>Upload Image</Button>
+      </div>
     </section>
   );
 };

@@ -10,8 +10,11 @@ const AlertButton = ({ message, children }: ButtonProps) => {
 export const Event = () => {
   return (
     <section className='section'>
-      <AlertButton message='Playing!'>Play Movie</AlertButton>
-      <AlertButton message='Uploading!'>Upload Image</AlertButton>
+      <strong>기본 이벤트</strong>
+      <div>
+        <AlertButton message='Playing!'>Play Movie</AlertButton>
+        <AlertButton message='Uploading!'>Upload Image</AlertButton>
+      </div>
     </section>
   );
 };
