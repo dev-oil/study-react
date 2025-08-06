@@ -4,5 +4,9 @@ type FancyTextProps = {
 };
 
 export const FancyText = ({ title, text }: FancyTextProps) => {
-  return title ? <h2>{text}</h2> : <h3>{text}</h3>;
+  return title ? (
+    <h3 className='text-xl text-blue-600 mb-2'>{text}</h3>
+  ) : (
+    <h3 className='font-extrabold'>{text}</h3>
+  );
 };

@@ -31,7 +31,7 @@ export const TSuseReducer = () => {
   const reset = () => dispatch({ type: 'reset' });
 
   return (
-    <div className='section'>
+    <div className='article'>
       <h2>Welcome to my counter</h2>
 
       <p>Count: {state.count}</p>

@@ -19,12 +19,20 @@ const Recipe = ({ drinkers }: RecipeProps) => {
 
 export const Pure = () => {
   return (
-    <section className='section'>
-      <h2>Spiced Chai Recipe</h2>
-      <h3>For two</h3>
+    <article className='article'>
+      <h2>컴포넌트 순수하게 유지하기 (순수성)</h2>
+      <p className='mb-3'>
+        같은 출력. 같은 입력이 주어졌다면 순수함수는 같은 결과를 반환합니다.
+        <br />
+        Recipe에 drinkers={2}를 넘기면 항상 2 cups of water를 포함한 JSX
+        반환합니다. drinkers={4}를 넘기면 항상 4 cups of water를 포함한 JSX를
+        반환합니다.
+      </p>
+      <h3 className='font-bold'>Spiced Chai Recipe</h3>
+      <h4 className='font-bold'>For two</h4>
       <Recipe drinkers={2} />
-      <h3>For a gathering</h3>
+      <h4 className='font-bold'>For a gathering</h4>
       <Recipe drinkers={4} />
-    </section>
+    </article>
   );
 };

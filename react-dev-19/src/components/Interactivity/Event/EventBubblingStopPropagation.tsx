@@ -20,7 +20,7 @@ const Button = ({ onClick, children }: ButtonProps) => {
 
 export const EventBubblingStopPropagation = () => {
   return (
-    <section className='section'>
+    <article className='article'>
       <strong>
         이벤트 버블링 멈춰! <code>e.stopPropagation()</code>
       </strong>
@@ -33,6 +33,6 @@ export const EventBubblingStopPropagation = () => {
         <Button onClick={() => alert('Playing!')}>Play Movie</Button>
         <Button onClick={() => alert('Uploading!')}>Upload Image</Button>
       </div>
-    </section>
+    </article>
   );
 };

@@ -4,7 +4,7 @@ export const DefaultBehavior = () => {
   // e.preventDefault() 는 기본 브라우저 동작을 가진 일부 이벤트가 해당 기본 동작을 실행하지 않도록 방지함
 
   return (
-    <section className='section'>
+    <article className='article'>
       <strong>
         기본 동작 막기 <code>e.preventDefault()</code>
       </strong>
@@ -17,6 +17,6 @@ export const DefaultBehavior = () => {
         <input />
         <button>Send</button>
       </form>
-    </section>
+    </article>
   );
 };

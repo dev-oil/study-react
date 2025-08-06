@@ -11,5 +11,5 @@ export const TSuseState = () => {
     status: 'idle',
   });
 
-  return <div className='section'>TSuseState</div>;
+  return <div className='article'>TSuseState</div>;
 };

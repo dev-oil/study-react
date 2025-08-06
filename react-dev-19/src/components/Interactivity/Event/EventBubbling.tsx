@@ -1,6 +1,6 @@
 export const EventBubbling = () => {
   return (
-    <section className='section'>
+    <article className='article'>
       <strong>이벤트 버블링</strong>
       <div
         className='Toolbar'
@@ -11,6 +11,6 @@ export const EventBubbling = () => {
         <button onClick={() => alert('Playing!')}>Play Movie</button>
         <button onClick={() => alert('Uploading!')}>Upload Image</button>
       </div>
-    </section>
+    </article>
   );
 };
