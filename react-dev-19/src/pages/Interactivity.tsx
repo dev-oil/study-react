@@ -7,6 +7,9 @@ import { DefaultBehavior } from '../components/Interactivity/Event/DefaultBehavi
 import { StateBasic } from '../components/Interactivity/State/StateBasic';
 import { StateMultiple } from '../components/Interactivity/State/StateMultiple';
 import { StateIndependent } from '../components/Interactivity/State/StateIndependent';
+import { Trigger } from '../components/Interactivity/Rendering/Trigger';
+import { Render } from '../components/Interactivity/Rendering/Render';
+import { DomCommit } from '../components/Interactivity/Rendering/DomCommit';
 
 export const Interactivity = () => {
   return (
@@ -29,6 +32,24 @@ export const Interactivity = () => {
           <StateBasic />
           <StateMultiple />
           <StateIndependent />
+        </section>
+        <section className='mt-20'>
+          <h2 className='mb-5 text-2xl font-bold'>3. 렌더링 그리고 커밋</h2>
+          <p className='mb-5'>
+            주방에서 요리사가 컴포넌트를 재료로 맛있는 요리를 한다고
+            상상해보세요. 이 시나리오에서 React는 고객들의 요청을 받고 주문을
+            가져오는 웨이터입니다. 이 과정에는 UI를 요청하고 제공하는 세 가지
+            단계가 있습니다.
+            <br />
+            1. 렌더링 트리거 (손님의 주문을 주방으로 전달)
+            <br />
+            2. 컴포넌트 렌더링 (주방에서 주문 준비하기)
+            <br />
+            3. DOM에 커밋 (테이블에 주문한 요리 내놓기)
+          </p>
+          <Trigger />
+          <Render />
+          <DomCommit />
         </section>
       </div>
     </>
