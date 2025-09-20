@@ -4,6 +4,9 @@ import { EventHandleProp } from '../components/Interactivity/Event/EventHandlePr
 import { EventBubbling } from '../components/Interactivity/Event/EventBubbling';
 import { EventBubblingStopPropagation } from '../components/Interactivity/Event/EventBubblingStopPropagation';
 import { DefaultBehavior } from '../components/Interactivity/Event/DefaultBehavior';
+import { StateBasic } from '../components/Interactivity/State/StateBasic';
+import { StateMultiple } from '../components/Interactivity/State/StateMultiple';
+import { StateIndependent } from '../components/Interactivity/State/StateIndependent';
 
 export const Interactivity = () => {
   return (
@@ -18,6 +21,14 @@ export const Interactivity = () => {
           <EventBubbling />
           <EventBubblingStopPropagation />
           <DefaultBehavior />
+        </section>
+        <section className='mt-20'>
+          <h2 className='mb-5 text-2xl font-bold'>
+            2. State: 컴포넌트의 기억 저장소
+          </h2>
+          <StateBasic />
+          <StateMultiple />
+          <StateIndependent />
         </section>
       </div>
     </>
