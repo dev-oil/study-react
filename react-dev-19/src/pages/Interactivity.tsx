@@ -10,6 +10,8 @@ import { StateIndependent } from '../components/Interactivity/State/StateIndepen
 import { Trigger } from '../components/Interactivity/Rendering/Trigger';
 import { Render } from '../components/Interactivity/Rendering/Render';
 import { DomCommit } from '../components/Interactivity/Rendering/DomCommit';
+import { Counter } from '../components/Interactivity/Snapshot/Counter';
+import { CounterTimer } from '../components/Interactivity/Snapshot/CounterTimer';
 
 export const Interactivity = () => {
   return (
@@ -50,6 +52,11 @@ export const Interactivity = () => {
           <Trigger />
           <Render />
           <DomCommit />
+        </section>
+        <section className='mt-20'>
+          <h2 className='mb-5 text-2xl font-bold'>4. 스냅샷으로서의 State</h2>
+          <Counter />
+          <CounterTimer />
         </section>
       </div>
     </>
