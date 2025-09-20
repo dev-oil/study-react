@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Clock } from '../../../pages/Clock';
+import { Clock } from './Clock';
 
 /**
  * ==========================================
