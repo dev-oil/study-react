@@ -12,6 +12,10 @@ import { Render } from '../components/Interactivity/Rendering/Render';
 import { DomCommit } from '../components/Interactivity/Rendering/DomCommit';
 import { Counter } from '../components/Interactivity/Snapshot/Counter';
 import { CounterTimer } from '../components/Interactivity/Snapshot/CounterTimer';
+import { Batches } from '../components/Interactivity/State-update-queue/Batches';
+import { BeforeRenderStateUpdate } from '../components/Interactivity/State-update-queue/BeforeRenderStateUpdate';
+import { StateChangeUpdate } from '../components/Interactivity/State-update-queue/StateChangeUpdate';
+import { StateUpdateChange } from '../components/Interactivity/State-update-queue/StateUpdateChange';
 
 export const Interactivity = () => {
   return (
@@ -57,6 +61,13 @@ export const Interactivity = () => {
           <h2 className='mb-5 text-2xl font-bold'>4. 스냅샷으로서의 State</h2>
           <Counter />
           <CounterTimer />
+        </section>
+        <section className='mt-20'>
+          <h2 className='mb-5 text-2xl font-bold'>5. state 업데이트 큐</h2>
+          <Batches />
+          <BeforeRenderStateUpdate />
+          <StateChangeUpdate />
+          <StateUpdateChange />
         </section>
       </div>
     </>

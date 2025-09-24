@@ -42,7 +42,7 @@ const ParentComponent = () => {
       <p>카운트: {count}</p>
       <button
         onClick={() => setCount(count + 1)}
-        className='bg-blue-500 text-white px-3 py-1 rounded mt-2'
+        className='bg-blue-500 px-3 py-1 rounded mt-2'
       >
         증가 (재렌더링 트리거)
       </button>
