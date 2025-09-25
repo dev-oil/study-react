@@ -16,6 +16,9 @@ import { Batches } from '../components/Interactivity/State-update-queue/Batches'
 import { BeforeRenderStateUpdate } from '../components/Interactivity/State-update-queue/BeforeRenderStateUpdate';
 import { StateChangeUpdate } from '../components/Interactivity/State-update-queue/StateChangeUpdate';
 import { StateUpdateChange } from '../components/Interactivity/State-update-queue/StateUpdateChange';
+import { ReadOnlyState } from '../components/Interactivity/Object-state/ReadOnlyState';
+import { SpreadOperator } from '../components/Interactivity/Object-state/SpreadOperator';
+import { NestedObject } from '../components/Interactivity/Object-state/NestedObject';
 
 export const Interactivity = () => {
   return (
@@ -68,6 +71,14 @@ export const Interactivity = () => {
           <BeforeRenderStateUpdate />
           <StateChangeUpdate />
           <StateUpdateChange />
+        </section>
+        <section className='mt-20'>
+          <h2 className='mb-5 text-2xl font-bold'>
+            6. 객체 state 업데이트 하기
+          </h2>
+          <ReadOnlyState />
+          <SpreadOperator />
+          <NestedObject />
         </section>
       </div>
     </>
