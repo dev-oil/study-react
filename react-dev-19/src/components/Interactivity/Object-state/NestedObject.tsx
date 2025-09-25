@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+// 함수 하나로 통합해보기
 export const NestedObject = () => {
   const [person, setPerson] = useState({
     name: 'Niki de Saint Phalle',
@@ -10,40 +11,21 @@ export const NestedObject = () => {
     },
   });
 
-  function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setPerson({
-      ...person,
-      name: e.target.value,
-    });
-  }
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    const keys = name.split('.');
 
-  function handleTitleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setPerson({
-      ...person,
-      artwork: {
-        ...person.artwork,
-        title: e.target.value,
-      },
-    });
-  }
+    setPerson((prev) => {
+      const updated: any = { ...prev }; // 1. 최상위 복사
+      let temp = updated;
 
-  function handleCityChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setPerson({
-      ...person,
-      artwork: {
-        ...person.artwork,
-        city: e.target.value,
-      },
-    });
-  }
+      for (let i = 0; i < keys.length - 1; i++) {
+        temp[keys[i]] = { ...temp[keys[i]] }; // 2. 중첩 객체도 복사
+        temp = temp[keys[i]]; // 3. temp를 내려가면서 마지막 키 직전까지 이동
+      }
 
-  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setPerson({
-      ...person,
-      artwork: {
-        ...person.artwork,
-        image: e.target.value,
-      },
+      temp[keys.at(-1)!] = value; // 4. 마지막 키에 값 할당
+      return updated;
     });
   }
 
@@ -53,24 +35,35 @@ export const NestedObject = () => {
 
       <label>
         Name:
-        <input value={person.name} onChange={handleNameChange} />
+        <input name='name' value={person.name} onChange={handleChange} />
       </label>
       <label>
         Title:
-        <input value={person.artwork.title} onChange={handleTitleChange} />
+        <input
+          name='artwork.title'
+          value={person.artwork.title}
+          onChange={handleChange}
+        />
       </label>
       <label>
         City:
-        <input value={person.artwork.city} onChange={handleCityChange} />
+        <input
+          name='artwork.city'
+          value={person.artwork.city}
+          onChange={handleChange}
+        />
       </label>
       <label>
         Image:
-        <input value={person.artwork.image} onChange={handleImageChange} />
+        <input
+          name='artwork.image'
+          value={person.artwork.image}
+          onChange={handleChange}
+        />
       </label>
+
       <p>
-        <i>{person.artwork.title}</i>
-        {' by '}
-        {person.name}
+        <i>{person.artwork.title}</i> by {person.name}
         <br />
         (located in {person.artwork.city})
       </p>

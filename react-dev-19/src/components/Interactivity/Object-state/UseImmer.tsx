@@ -1,4 +1,5 @@
 import { useImmer } from 'use-immer';
+import set from 'lodash/set';
 
 export const UseImmer = () => {
   const [person, updatePerson] = useImmer({
@@ -10,47 +11,43 @@ export const UseImmer = () => {
     },
   });
 
-  function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
     updatePerson((draft) => {
-      draft.name = e.target.value;
-    });
-  }
-
-  function handleTitleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    updatePerson((draft) => {
-      draft.artwork.title = e.target.value;
-    });
-  }
-
-  function handleCityChange(e: React.ChangeEvent<HTMLInputElement>) {
-    updatePerson((draft) => {
-      draft.artwork.city = e.target.value;
-    });
-  }
-
-  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
-    updatePerson((draft) => {
-      draft.artwork.image = e.target.value;
+      set(draft, name, value); // "artwork.title" 자동 탐색 후 대입
     });
   }
 
   return (
-    <>
+    <article className='article'>
+      <h3 className='article-title'>UseImmer</h3>
       <label>
         Name:
-        <input value={person.name} onChange={handleNameChange} />
+        <input name='name' value={person.name} onChange={handleChange} />
       </label>
       <label>
         Title:
-        <input value={person.artwork.title} onChange={handleTitleChange} />
+        <input
+          name='artwork.title'
+          value={person.artwork.title}
+          onChange={handleChange}
+        />
       </label>
       <label>
         City:
-        <input value={person.artwork.city} onChange={handleCityChange} />
+        <input
+          name='artwork.city'
+          value={person.artwork.city}
+          onChange={handleChange}
+        />
       </label>
       <label>
         Image:
-        <input value={person.artwork.image} onChange={handleImageChange} />
+        <input
+          name='artwork.image'
+          value={person.artwork.image}
+          onChange={handleChange}
+        />
       </label>
       <p>
         <i>{person.artwork.title}</i>
@@ -60,6 +57,6 @@ export const UseImmer = () => {
         (located in {person.artwork.city})
       </p>
       <img src={person.artwork.image} alt={person.artwork.title} />
-    </>
+    </article>
   );
 };

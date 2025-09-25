@@ -19,6 +19,7 @@ import { StateUpdateChange } from '../components/Interactivity/State-update-queu
 import { ReadOnlyState } from '../components/Interactivity/Object-state/ReadOnlyState';
 import { SpreadOperator } from '../components/Interactivity/Object-state/SpreadOperator';
 import { NestedObject } from '../components/Interactivity/Object-state/NestedObject';
+import { UseImmer } from '../components/Interactivity/Object-state/UseImmer';
 
 export const Interactivity = () => {
   return (
@@ -79,6 +80,7 @@ export const Interactivity = () => {
           <ReadOnlyState />
           <SpreadOperator />
           <NestedObject />
+          <UseImmer />
         </section>
       </div>
     </>
