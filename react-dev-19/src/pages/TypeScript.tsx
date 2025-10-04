@@ -8,12 +8,12 @@ import { TSuseState } from '../components/TypeScript/TSuseState';
 
 export const TypeScript = () => {
   return (
-    <>
+    <div className='p-10 bg-white'>
       <TSuseState />
       <TSuseReducer />
       <TSuseContext />
       <TSuseContextNull />
       <TSuseCallback />
-    </>
+    </div>
   );
 };

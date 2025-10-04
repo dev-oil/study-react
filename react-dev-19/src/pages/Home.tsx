@@ -7,7 +7,7 @@ export const Home = () => {
     { path: '/interactivity', label: '상호작용' },
   ];
   return (
-    <div className='min-h-screen p-10'>
+    <div className='min-h-screen p-10 bg-white'>
       <div className='max-w-3xl mx-auto'>
         <h1 className='text-4xl font-bold text-center mb-12'>
           🧪 React 19 실험실 🧪

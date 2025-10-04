@@ -6,7 +6,7 @@ import { TreeHome } from '../components/UI/Tree/TreeHome';
 export const UI = () => {
   return (
     <>
-      <section className='p-10'>
+      <section className='p-10 bg-white'>
         <h1 className='mb-5 text-4xl font-bold'>UI</h1>
         <Pure />
         <SideEffect />

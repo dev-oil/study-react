@@ -20,11 +20,19 @@ import { ReadOnlyState } from '../components/Interactivity/Object-state/ReadOnly
 import { SpreadOperator } from '../components/Interactivity/Object-state/SpreadOperator';
 import { NestedObject } from '../components/Interactivity/Object-state/NestedObject';
 import { UseImmer } from '../components/Interactivity/Object-state/UseImmer';
+import { Add } from '../components/Interactivity/Array-state/Add';
+import { Delete } from '../components/Interactivity/Array-state/Delete';
+import { Map } from '../components/Interactivity/Array-state/Map';
+import { Replace } from '../components/Interactivity/Array-state/Replace';
+import { Slice } from '../components/Interactivity/Array-state/Slice';
+import { Copy } from '../components/Interactivity/Array-state/Copy';
+import { Update } from '../components/Interactivity/Array-state/Update';
+import { UseImmerArray } from '../components/Interactivity/Array-state/UseImmerArray';
 
 export const Interactivity = () => {
   return (
     <>
-      <div className='p-10'>
+      <div className='p-10 bg-white'>
         <h1 className='mb-5 text-4xl font-bold'>상호작용</h1>
         <section>
           <h2 className='mb-5 text-2xl font-bold'>1. 이벤트에 응답하기</h2>
@@ -81,6 +89,19 @@ export const Interactivity = () => {
           <SpreadOperator />
           <NestedObject />
           <UseImmer />
+        </section>
+        <section className='mt-20'>
+          <h2 className='mb-5 text-2xl font-bold'>
+            7. 배열 state 업데이트 하기
+          </h2>
+          <Add />
+          <Delete />
+          <Map />
+          <Replace />
+          <Slice />
+          <Copy />
+          <Update />
+          <UseImmerArray />
         </section>
       </div>
     </>
