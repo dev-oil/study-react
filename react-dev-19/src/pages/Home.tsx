@@ -5,6 +5,7 @@ export const Home = () => {
     { path: '/typescript', label: 'TypeScript' },
     { path: '/ui', label: 'UI' },
     { path: '/interactivity', label: '상호작용' },
+    { path: '/state', label: 'State' },
   ];
   return (
     <div className='min-h-screen p-10 bg-white'>

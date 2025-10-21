@@ -3,6 +3,7 @@ import { Home } from './pages/Home';
 import { TypeScript } from './pages/TypeScript';
 import { UI } from './pages/UI';
 import { Interactivity } from './pages/Interactivity';
+import { State } from './pages/State';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path='/typescript' element={<TypeScript />} />
         <Route path='/ui' element={<UI />} />
         <Route path='/interactivity' element={<Interactivity />} />
+        <Route path='/state' element={<State />} />
       </Routes>
     </BrowserRouter>
   );
